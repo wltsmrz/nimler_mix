@@ -1,13 +1,14 @@
 
-defmodule Mix.Tasks.Compile.Nim do
+defmodule Mix.Tasks.Compile.Nimler do
+  @moduledoc "Compiles Nim source files"
+
   use Mix.Task.Compiler
 
-  @default_nim_root "lib/native"
-  @default_nim_compile_mode :release
-  @default_nim_compile_flags []
-  @default_nim_nif_filename "nif.nim"
+  @default_root "lib/native"
+  @default_compile_mode :release
+  @default_compile_flags []
+  @default_filename "nif.nim"
 
-  @shortdoc "Compile nim nifs"
   def run(_) do
     case System.find_executable("nim") do
       nil ->
@@ -21,20 +22,28 @@ defmodule Mix.Tasks.Compile.Nim do
     end
   end
 
-  def compile_nim(cmd) do
-    nimler_config = Mix.Project.get!().nimler_config()
-    nim_root = Keyword.get(nimler_config, :path, @default_nim_root_relative)
-    nim_mode = Keyword.get(nimler_config, :mode, @default_nim_compile_mode)
-    nim_flags = Keyword.get(nimler_config, :compile_flags, @default_nim_compile_flags)
+  defp compile_nim(cmd) do
+    nimler_config = Keyword.get(Mix.Project.config(), :nimler_config, [])
+    nim_root = Keyword.get(nimler_config, :root, @default_root)
 
-    nim_mode_flag = "-d:" <> to_string(nim_mode)
+    nim_mode = Keyword.get(nimler_config, :compile_mode, @default_compile_mode)
+    nim_flags = Keyword.get(nimler_config, :compile_flags, @default_compile_flags)
 
     compile_root = Path.join(File.cwd!, nim_root)
-    compile_args = ["c", nim_mode_flag] ++ nim_flags ++ [@default_nim_nif_filename]
+    compile_args = [
+      "c",
+      "-d:" <> to_string(nim_mode),
+      "-d:nimlerGenWrapperForce",
+      "-d:nimlerWrapperRoot=" <> compile_root,
+      "-d:nimlerWrapperFilename=nif_wrapper.ex"
+    ]
+    ++ nim_flags
+    ++ [@default_filename]
 
-    case System.cmd(cmd, compile_args, cd: compile_root) do
-      {_, 0} -> 
-        :ok
+    case System.cmd(cmd, compile_args,
+      cd: compile_root, into: IO.stream(:stdio, :line)) do
+      {_, 0} ->
+        Mix.Shell.IO.info("Compiled nimler NIF")
       _ ->
         Mix.Shell.IO.error("Failed to compile nimler module")
     end
