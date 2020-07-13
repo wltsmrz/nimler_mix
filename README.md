@@ -40,7 +40,7 @@ Nimler generates `lib/native/nif_wrapper` by default
 
 **Configuration sample**
 
-```
+```mix.exs
   def project do
     [
       app: :myproject,
@@ -48,8 +48,8 @@ Nimler generates `lib/native/nif_wrapper` by default
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      compilers: Mix.compilers ++ [:nimler],
-      nimler_config: nimler_config()
+      compilers: Mix.compilers ++ [:nimler], # add the nimler compiler
+      nimler_config: nimler_config() # add optional nimler_config
     ]
   end
 
