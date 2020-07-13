@@ -22,7 +22,9 @@ defmodule Nimler.MixProject do
   end
 
   defp deps() do
-    []
+    [
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+    ]
   end
 
   defp description() do
@@ -32,6 +34,7 @@ defmodule Nimler.MixProject do
   defp package() do
     [
       licenses: ["MIT"],
+      files: ~w(lib priv .formatter.exs mix.exs README*),
       links: %{
         "GitHub" => "https://github.com/wltsmrz/nimler_hex"
       }

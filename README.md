@@ -5,9 +5,19 @@ Nimler helpers for Elixir
 ## Installation
 
 1. Install nim
+
 2. Install nimler using nimble. `nimble install nimler`
-3. Add `nimler` to mix.exs and run `mix deps.get`
+
+3. Add `nimler` to mix.exs and run `mix deps.get` to install nimler from hex.pm
+
+```mix.exs
+  def deps() do
+    [{:nimler, "~> 0.1.0"}]
+  end
+```
+
 4. `mix nimler.new` to generate scaffold NIF project
+
 5. `mix compile.nimler` to compile NIF with nimler
 
 ### mix nimler.new
@@ -53,6 +63,4 @@ Nimler generates `lib/native/nif_wrapper` by default
   end
 
 ```
-
-
 
