@@ -20,7 +20,7 @@ Nimler helpers for Elixir
 
 5. `mix compile.nimler` to compile NIF with nimler
 
-### mix nimler.new
+## mix nimler.new
 
 Generate basic nimler NIF
 
@@ -32,11 +32,11 @@ Generate basic nimler NIF
 
 `lib/native/nim.cfg` is default NIF nim configuration. This will be used during compilation. See [priv/templates/nim.cfg](priv/templates/nim.cfg) for current nim.cfg template
 
-### mix compile.nimler
+## mix compile.nimler
 
 Compile NIFs in `lib/native` using [nimler](https://github.com/wltsmrz/nimler)
 
-Nimler generates `lib/native/nif_wrapper` by default
+Nimler generates `lib/native/nif_wrapper.ex` by default
 
 **Configuration sample**
 
@@ -65,7 +65,7 @@ Nimler generates `lib/native/nif_wrapper` by default
       # compile_flags are passed directly to nim compiler
       # see [priv/templates/nim.cfg](priv/templates/nim.cfg) for default nim cfg
       compile_flags: [
-        "--verbosity:2
+        "--verbosity:2"
       ]
     ]
   end
