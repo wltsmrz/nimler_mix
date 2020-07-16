@@ -12,7 +12,7 @@ Nimler helpers for Elixir
 
 ```mix.exs
   def deps() do
-    [{:nimler, "~> 0.1.0"}]
+    [{:nimler, "~> 0.1.1"}]
   end
 ```
 
@@ -30,7 +30,7 @@ Generate basic nimler NIF
 
 `lib/native/nif.nim` is default NIF file
 
-`lib/native/nim.cfg` is default NIF nim configuration. This will be used during compilation
+`lib/native/nim.cfg` is default NIF nim configuration. This will be used during compilation. See [priv/templates/nim.cfg](priv/templates/nim.cfg) for current nim.cfg template
 
 ### mix compile.nimler
 
@@ -48,18 +48,30 @@ Nimler generates `lib/native/nif_wrapper` by default
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      compilers: Mix.compilers ++ [:nimler], # add the nimler compiler
-      nimler_config: nimler_config() # add optional nimler_config
+
+      # add the nimler compiler
+      compilers: Mix.compilers ++ [:nimler],
+
+      # add optional nimler_config
+      nimler_config: nimler_config()
     ]
   end
 
   def nimler_config() do
     [
+      # compile_mode can be one of :debug, :release, :danger
       compile_mode: :debug,
-      compile_flags: [ # passed directly to nim compile
+
+      # compile_flags are passed directly to nim compiler
+      # see [priv/templates/nim.cfg](priv/templates/nim.cfg) for default nim cfg
+      compile_flags: [
         "--verbosity:2
       ]
     ]
+  end
+
+  def deps() do
+    [{:nimler, "~> 0.1.1"}]
   end
 
 ```
