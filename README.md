@@ -1,5 +1,3 @@
-# NimlerHex
-
 Nimler helpers for Elixir
 
 ## Installation
